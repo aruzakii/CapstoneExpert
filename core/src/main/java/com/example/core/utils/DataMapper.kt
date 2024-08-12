@@ -36,42 +36,35 @@ object DataMapper {
             )
         }
 
-    fun mapDomainToEntity(input: Github) = GithubEntity(
-        id = input.id,
-        reposUrl = input.reposUrl,
-        followersUrl = input.followersUrl,
-        followingUrl = input.followingUrl,
-        login = input.login,
-        avatarUrl = input.avatarUrl,
-    )
 
 
-    fun mapResponsesToEntities2(input: DetailUserGithubResponse) =
-        GithubDetailEntity(
-        id =  input.id,
-        followers = input.followers,
-        following = input.following,
-        avatarUrl = input.avatarUrl,
-        login = input.login,
-        name = input.name
-    )
 
-    fun mapEntitiesToDomain2(input: GithubDetailEntity)= GithubDetail (
-        id =  input.id,
-        followers = input.followers,
-        following = input.following,
-        avatarUrl = input.avatarUrl,
-        login = input.login,
-        name = input.name
-    )
+    fun mapResponsesToEntities2(input: DetailUserGithubResponse): List<GithubDetailEntity> {
+        val githubList = ArrayList<GithubDetailEntity>()
+            val github = GithubDetailEntity(
+                id =  input.id ?: 0,
+                followers = input.followers ?: 0,
+                following = input.following ?: 0,
+                avatarUrl = input.avatarUrl ?: "",
+                login = input.login ?: "",
+                name = input.name ?: ""
+            )
+            githubList.add(github)
+
+        return githubList
+    }
+    fun mapEntitiesToDomain2(input:List<GithubDetailEntity>): List<GithubDetail> =
+        input.map {
+            GithubDetail (
+                id =  it.id,
+                followers = it.followers,
+                following = it.following,
+                avatarUrl = it.avatarUrl,
+                login = it.login,
+                name = it.name
+            )
+        }
 
 
-    fun mapDomainToEntity2(input: Github) = GithubEntity(
-        id = input.id,
-        reposUrl = input.reposUrl,
-        followersUrl = input.followersUrl,
-        followingUrl = input.followingUrl,
-        login = input.login,
-        avatarUrl = input.avatarUrl,
-    )
+
 }

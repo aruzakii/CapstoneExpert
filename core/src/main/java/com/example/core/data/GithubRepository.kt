@@ -47,9 +47,9 @@ class GithubRepository(
             }
         }.asFlow()
 
-    override fun getDetailUser(username: String) : Flow<Resource<GithubDetail>> =
-        object : NetworkBoundResource<GithubDetail, DetailUserGithubResponse>(){
-            override fun loadFromDB(): Flow<GithubDetail> {
+    override fun getDetailUser(username: String) : Flow<Resource<List<GithubDetail>>> =
+        object : NetworkBoundResource<List<GithubDetail>, DetailUserGithubResponse>(){
+            override fun loadFromDB(): Flow<List<GithubDetail>> {
                 return localDataSource.getDetailGithub().map {
                     DataMapper.mapEntitiesToDomain2(it)
                 }
@@ -63,12 +63,12 @@ class GithubRepository(
                 localDataSource.deleteGithubDetail()
             }
 
-            override suspend fun saveCallResult(data: DetailUserGithubResponse) {
+            override suspend fun saveCallResult(data:DetailUserGithubResponse) {
                 val githubdetail = DataMapper.mapResponsesToEntities2(data)
                 localDataSource.insertGithubDetail(githubdetail)
             }
 
-            override fun shouldFetch(data: GithubDetail?): Boolean = true
+            override fun shouldFetch(data: List<GithubDetail>?): Boolean = true
 
         }.asFlow()
 

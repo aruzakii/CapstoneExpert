@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface GithubUseCase {
     fun getAllGithub(querry :String): Flow<Resource<List<Github>>>
-    fun getDetailUser(username: String) : Flow<Resource<GithubDetail>>
+    fun getDetailUser(username: String) : Flow<Resource<List<GithubDetail>>>
 //    fun getFavoriteTourism(): Flow<List<Tourism>>
 //    fun setFavoriteTourism(tourism: Tourism, state: Boolean)
 }

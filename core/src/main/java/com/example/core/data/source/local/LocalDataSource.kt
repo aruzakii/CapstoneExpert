@@ -20,9 +20,9 @@ class LocalDataSource(private val githubDao: GithubDao) {
         githubDao.deleteAllGithub()
     }
 
-    fun getDetailGithub(): Flow<GithubDetailEntity> = githubDao.getDetailGithub()
+    fun getDetailGithub(): Flow<List<GithubDetailEntity>> = githubDao.getDetailGithub()
 
-    suspend fun insertGithubDetail(githuDetail: GithubDetailEntity) {
+    suspend fun insertGithubDetail(githuDetail: List<GithubDetailEntity>) {
         githubDao.insertGithubDetail(githuDetail)
     }
 

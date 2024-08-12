@@ -26,55 +26,42 @@ class DetailActivity : AppCompatActivity() {
             detailViewModel.setUsername(username)
         }
 
-            lifecycleScope.launch {
-                detailViewModel.github.collect{github ->
-                    if (github != null) {
-                        when (github) {
-                            is Resource.Loading -> binding.progressBar.visibility = View.VISIBLE
-                            is Resource.Success -> {
-                                binding.progressBar.visibility = View.GONE
-                                github.data?.let { showDetailTourism(it) }
-                            }
-                            is Resource.Error -> {
-                                binding.progressBar.visibility = View.GONE
+        lifecycleScope.launch {
+            detailViewModel.github.collect{github ->
+                if (github != null) {
+                    when (github) {
+                        is Resource.Loading -> binding.progressBar.visibility = View.VISIBLE
+                        is Resource.Success -> {
+                            binding.progressBar.visibility = View.GONE
+                            github.data?.let { showDetailTourism(it) }
+                        }
+                        is Resource.Error -> {
+                            binding.progressBar.visibility = View.GONE
 //                        binding.viewError.root.visibility = View.VISIBLE
 //                        binding.viewError.tvError.text = tourism.message ?: getString(R.string.something_wrong)
-                            }
                         }
                     }
                 }
             }
+        }
 
-//        detailViewModel.github.observe(this){github ->
-//            if (github != null) {
-//                        when (github) {
-//                            is Resource.Loading -> binding.progressBar.visibility = View.VISIBLE
-//                            is Resource.Success -> {
-//                                binding.progressBar.visibility = View.GONE
-//                                github.data?.let { showDetailTourism(it) }
-//                            }
-//                            is Resource.Error -> {
-//                                binding.progressBar.visibility = View.GONE
-////                        binding.viewError.root.visibility = View.VISIBLE
-////                        binding.viewError.tvError.text = tourism.message ?: getString(R.string.something_wrong)
-//                            }
-//                        }
-//                    }
-//                }
-//
+
     }
 
 
-    private fun showDetailTourism(detailGithub: GithubDetail) {
+    private fun showDetailTourism(detailGithub: List<GithubDetail>) {
 
-            binding.name.text = detailGithub.name
-            binding.username.text = detailGithub.login
-            binding.followers.text = "Followers ${detailGithub.followers.toString()}"
-            binding.following.text = "Following ${detailGithub.following.toString()}"
+        detailGithub.map {
+            binding.name.text = it.name
+            binding.username.text = it.login
+            binding.followers.text = "Followers ${it.followers.toString()}"
+            binding.following.text = "Following ${it.following.toString()}"
 
             Glide.with(this)
-                .load(detailGithub.avatarUrl)
+                .load(it.avatarUrl)
                 .transform(CircleCrop())
                 .into(binding.imgDetailProfile)
+        }
+
     }
 }

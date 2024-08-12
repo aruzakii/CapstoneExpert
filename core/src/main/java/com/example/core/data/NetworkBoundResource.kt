@@ -10,17 +10,18 @@ import kotlinx.coroutines.flow.map
 abstract class NetworkBoundResource<ResultType, RequestType> {
 
     private var result: Flow<Resource<ResultType>> = flow {
-        emit(Resource.Loading())
+//        if (shouldClearOldData()) {
+//            deleteOldData()
+//        }
 
-        if (shouldClearOldData()) {
-            deleteOldData()
-        }
+        emit(Resource.Loading())
 
         val dbSource = loadFromDB().first()
         if (shouldFetch(dbSource)) {
             emit(Resource.Loading())
             when (val apiResponse = createCall().first()) {
                 is ApiResponse.Success -> {
+                    deleteOldData()
                     saveCallResult(apiResponse.data)
                     emitAll(loadFromDB().map { Resource.Success(it) })
                 }

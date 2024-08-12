@@ -12,7 +12,7 @@ interface GithubDao {
     fun getAllGithub(): Flow<List<GithubEntity>>
 
     @Query("SELECT * FROM githubdetail")
-    fun getDetailGithub(): Flow<GithubDetailEntity>
+    fun getDetailGithub(): Flow<List<GithubDetailEntity>>
 
     @Query("DELETE FROM github")
     suspend fun deleteAllGithub()
@@ -21,7 +21,7 @@ interface GithubDao {
     suspend fun insertGithub(github: List<GithubEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGithubDetail(githubDetail: GithubDetailEntity)
+    suspend fun insertGithubDetail(githubDetail:List<GithubDetailEntity>)
 
     @Query("DELETE FROM githubdetail")
     suspend fun deleteGithubDetail()
