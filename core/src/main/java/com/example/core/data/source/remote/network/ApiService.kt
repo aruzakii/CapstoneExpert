@@ -1,5 +1,6 @@
 package com.example.core.data.source.remote.network
 
+import com.example.core.data.source.remote.response.DetailUserGithubResponse
 import com.example.core.data.source.remote.response.GithubResponse
 import com.example.core.data.source.remote.response.ItemsItem
 import retrofit2.Call
@@ -11,4 +12,9 @@ import retrofit2.http.Query
 interface ApiService {
     @GET("search/users")
     suspend fun getListUsers(@Query("q") q: String): GithubResponse
+
+    @GET("users/{username}")
+    suspend fun getDetailUser(@Path("username") username: String): DetailUserGithubResponse
+
+
 }

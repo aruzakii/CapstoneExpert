@@ -11,6 +11,11 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
 
     private var result: Flow<Resource<ResultType>> = flow {
         emit(Resource.Loading())
+
+        if (shouldClearOldData()) {
+            deleteOldData()
+        }
+
         val dbSource = loadFromDB().first()
         if (shouldFetch(dbSource)) {
             emit(Resource.Loading())
@@ -41,6 +46,12 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
     protected abstract suspend fun createCall(): Flow<ApiResponse<RequestType>>
 
     protected abstract suspend fun saveCallResult(data: RequestType)
+
+    // Metode untuk menghapus data lama
+    protected abstract suspend fun deleteOldData()
+
+    // Metode untuk menentukan apakah data lama perlu dihapus sebelum memuat data baru
+    protected open fun shouldClearOldData(): Boolean = true
 
     fun asFlow(): Flow<Resource<ResultType>> = result
 }

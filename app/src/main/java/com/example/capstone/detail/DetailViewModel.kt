@@ -1,4 +1,4 @@
-package com.example.capstone.home
+package com.example.capstone.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -11,24 +11,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 
-class MainViewModel(githubUseCase: GithubUseCase): ViewModel() {
-//    var querry = ""
-//
-//    val github = githubUseCase.getAllGithub(querry).asLiveData()
-
-    private val _query = MutableStateFlow("")
-    val query: StateFlow<String> get() = _query
+class DetailViewModel(githubUseCase: GithubUseCase): ViewModel() {
+//    val github = githubUseCase.getDetailUser("aruzakii").asLiveData()
+    private val _username = MutableStateFlow("")
+    val username: StateFlow<String> get() = _username
 
     // StateFlow untuk menyimpan data berdasarkan query
-    val github = _query
-        .flatMapLatest { query ->
-            githubUseCase.getAllGithub(query)
+    val github = _username
+        .flatMapLatest { username ->
+            githubUseCase.getDetailUser(username)
                 .stateIn(viewModelScope, SharingStarted.Lazily, Resource.Loading())
         }
 
     // Fungsi untuk memperbarui query
-    fun setQuery(newQuery: String) {
-        _query.value = newQuery
+    fun setUsername(newUsername: String) {
+        _username.value = newUsername
     }
-
 }

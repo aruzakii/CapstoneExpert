@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-parcelize")
 }
-apply(from = "../shared_dependencies.gradle")
+    apply(from = "../shared_dependencies.gradle")
 
 android {
     namespace = "com.example.capstone"
@@ -44,6 +44,10 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+//    implementation(libs.androidx.appcompat)
+//    implementation(libs.material)
+//    implementation(libs.androidx.activity)
+//    implementation(libs.androidx.constraintlayout)
 
 
 }
